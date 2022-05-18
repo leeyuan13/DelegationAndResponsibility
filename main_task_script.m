@@ -11,12 +11,12 @@ close all;
 clc;
 clear;
 
-subno  = input('Subject number? ', 's');
-% gender = input('Gender? (M/F/Other) ', 's');
-% age = input('Age? ', 's');
-% program = input('BSE program? ', 's');
+% global gender age program;
 
-global gender age program;
+subno  = input('Subject number? ', 's');
+gender = input('Gender? (M/F/Other) ', 's');
+age = input('Age? ', 's');
+program = input('BSE program? ', 's');
 
 % Information.
 DATAf.subno = subno;

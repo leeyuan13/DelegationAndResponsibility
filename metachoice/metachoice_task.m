@@ -102,7 +102,7 @@ DATA.times.wait = 5000; % minimum wait time
 % A block can be a gain block or a loss block in any given stage.
 % The block length must be an even number.
 DATA.params.numBlocks = 2*(DATA.numTestStages+1);
-DATA.params.blockLength = 30; % change for debugging, max 60
+DATA.params.blockLength = 20; % change for debugging, max 60
 % Number of trials.
 DATA.params.alltrials = DATA.params.blockLength*DATA.params.numBlocks; 
 % Two stimuli per trial.
