@@ -28,9 +28,9 @@ DATAf.program = program;
 DATAf.treatment_type = rem(str2double(subno), 3);
 
 DATAf.skip_metachoice = 0; % whether to skip delegation task
-DATAf.skip_risk_loss = 0;
+DATAf.skip_risk_loss = 0; % whether to skip gambling task
 
-mkdir(['data\Sub' subno]); %create folder where data will be saved
+mkdir(['data\Sub' subno]); % create folder where data will be saved
 
 if DATAf.skip_metachoice == 0
     DATA1 = metachoice_task(subno,gender,age,program);
@@ -51,7 +51,7 @@ end
 
 % Payoffs.
 DATAf.risk_loss_av_payoffs = [DATA2.Outcomes.Average];
-%DATAf.risk_loss_av_payoffs = [];
+%DATAf.risk_loss_av_payoffs = [0];
 DATAf.metachoice_av_payoffs = DATA1.samples.sampled_payoffs;
 
 %% Set up cogent
@@ -88,31 +88,28 @@ start_cogent;
 
 preparestring('Thank you for participating in the experiment!',1,0,250);
 preparestring('Please stay on this screen until the experimenter comes by',1,0,200);
-preparestring('to record the following information.',1,0,150);
+preparestring('to record the following information,',1,0,150);
 
 if DATAf.treatment_type == 0
-    preparestring('The following are your payoffs from the first part:', 1,0,50);
+    preparestring('which are your payoffs for the two parts of the experiment.', 1,0,100);
 elseif DATAf.treatment_type == 1
-    preparestring('The following are your individual payoffs from the first part:', 1,0,50);
+    preparestring('which are your individual payoffs for the two parts of the experiment.', 1,0,100);
 elseif DATAf.treatment_type == 2
-    preparestring('The following are your individual payoffs from the first part:', 1,0,50);
+    preparestring('which are your individual payoffs for the two parts of the experiment.', 1,0,100);
 end
 
-num_payoffs = max(length(DATAf.risk_loss_av_payoffs), length(DATAf.metachoice_av_payoffs));
-
-for ii = 1:length(DATAf.metachoice_av_payoffs)
-    preparestring([num2str(DATAf.metachoice_av_payoffs(ii)) ' euros'],1,0,50-50*ii);
-end
+preparestring(['For the first part: ' num2str(mean(DATAf.metachoice_av_payoffs,'omitnan')) ' euros'],1,0,0)
+preparestring(['For the second part: ' num2str(mean(DATAf.risk_loss_av_payoffs,'omitnan')) ' euros'],1,0,-50)
 
 if DATAf.treatment_type == 1
-    preparestring('Note that these may not be the payoffs you receive if you are',1,0,50-50*(num_payoffs+2));
-    preparestring('not ultimately held responsible for your group.',1,0,50-50*(num_payoffs+3));
-    preparestring('Subsequently we will announce your group payoff.',1,0,50-50*(num_payoffs+4));
+    preparestring('Note that these may not be the payoffs you receive if you are',1,0,-150);
+    preparestring('not ultimately held responsible for your group.',1,0,-200);
+    preparestring('Subsequently we will announce your group payoff.',1,0,-250);
 elseif DATAf.treatment_type == 2
-    preparestring('Note that these may not be the payoffs you receive if you are',1,0,50-50*(num_payoffs+2));
-    preparestring('not ultimately held responsible for your group.',1,0,50-50*(num_payoffs+3));
-    preparestring('Subsequently we will announce your group payoff and ',1,0,50-50*(num_payoffs+4));
-    preparestring('the identity of the responsible party.',1,0,50-50*(num_payoffs+5));
+    preparestring('Note that these may not be the payoffs you receive if you are',1,0,-150);
+    preparestring('not ultimately held responsible for your group.',1,0,-200);
+    preparestring('Subsequently we will announce your group payoff and ',1,0,-250);
+    preparestring('the identity of the responsible party.',1,0,-300);
 end
 
 drawpict(1);
@@ -121,37 +118,6 @@ waitkeydown(inf,6); % f
 waitkeydown(inf,9); % i
 waitkeydown(inf,14); % n
 
-clearpict(1);
-clearpict;
-
-preparestring('Please stay on this screen until the experimenter comes by',1,0,200);
-preparestring('to record the following information.',1,0,150);
-
-if DATAf.treatment_type == 0
-    preparestring('The following is your payoff from the second part:', 1,0,50);
-elseif DATAf.treatment_type == 1
-    preparestring('The following is your individual payoff from the second part:', 1,0,50);
-elseif DATAf.treatment_type == 2
-    preparestring('The following is your individual payoff from the second part:', 1,0,50);
-end
-
-for ii = 1:length(DATAf.risk_loss_av_payoffs)
-    preparestring([num2str(DATAf.risk_loss_av_payoffs(ii)) ' euros'],1,0,50-50*ii);
-end
-
-if DATAf.treatment_type == 1
-    preparestring('Note that these may not be the payoffs you receive if you are',1,0,50-50*(num_payoffs+2));
-    preparestring('not ultimately held responsible for your group.',1,0,50-50*(num_payoffs+3));
-    preparestring('Subsequently we will announce your group payoff.',1,0,50-50*(num_payoffs+4));
-elseif DATAf.treatment_type == 2
-    preparestring('Note that these may not be the payoffs you receive if you are',1,0,50-50*(num_payoffs+2));
-    preparestring('not ultimately held responsible for your group.',1,0,50-50*(num_payoffs+3));
-    preparestring('Subsequently we will announce your group payoff and ',1,0,50-50*(num_payoffs+4));
-    preparestring('the identity of the responsible party.',1,0,50-50*(num_payoffs+5));
-end
-
-drawpict(1);
-waitkeydown(inf,71);
 clearpict(1);
 clearpict;
 
